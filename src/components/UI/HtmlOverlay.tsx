@@ -4,10 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 
 import { 
-  SiCplusplus, SiJavascript, SiPython, SiHtml5, 
+  SiCplusplus, SiJavascript, SiPython,
   SiNodedotjs, SiExpress, SiPostgresql, SiGithub
 } from 'react-icons/si';
-import { FaGitAlt, FaDatabase, FaLinkedin, FaNetworkWired, FaCode } from 'react-icons/fa';
+import { FaGitAlt, FaLinkedin, FaNetworkWired, FaCode } from 'react-icons/fa';
 
 
 // UPGRADED: Interactive Skill Badge with Subtitles

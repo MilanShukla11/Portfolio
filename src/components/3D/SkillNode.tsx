@@ -12,7 +12,7 @@ export default function SkillNode({ data }: { data: NodeData }) {
 
   const glowColor = new THREE.Color(data.color).multiplyScalar(hovered ? 3 : 1.5);
 
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (!groupRef.current) return;
     
     // 1. The Clustering Physics
@@ -20,7 +20,7 @@ export default function SkillNode({ data }: { data: NodeData }) {
     const isProjectSection = offset > 0.15 && offset < 0.6;
 
     // Define the base (wide) position
-    const [baseX, baseY, baseZ] = data.position;
+    const [baseX, baseZ] = data.position;
     
     // Define the clustered (tight) position (pulling everything closer to center x:0, z:-25)
     const clusterX = baseX * 0.3; 

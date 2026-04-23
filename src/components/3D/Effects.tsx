@@ -1,5 +1,4 @@
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import { Resolution } from 'postprocessing'; // Import this if needed for strict types in some versions
 
 export default function Effects() {
   return (
