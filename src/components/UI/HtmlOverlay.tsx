@@ -4,11 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 
 import { 
-  SiCplusplus, SiJavascript, SiPython,
-  SiNodedotjs, SiExpress, SiPostgresql, SiGithub
+  SiCplusplus, SiJavascript, SiPython, SiHtml5, 
+  SiNodedotjs, SiExpress, SiPostgresql, SiGithub, SiEjs,
+  SiDatabricks, // Used for general data concepts/OOP or something suitable
 } from 'react-icons/si';
-import { FaGitAlt, FaLinkedin, FaNetworkWired, FaCode } from 'react-icons/fa';
-
+import { FaGitAlt, FaLinkedin, FaCode, FaNetworkWired, FaDatabase } from 'react-icons/fa';
+//
 
 // UPGRADED: Interactive Skill Badge with Subtitles
 const SkillBadge = ({ Icon, name, desc, colorClass }: { Icon: any, name: string, desc: string, colorClass: string }) => {
@@ -90,7 +91,7 @@ export default function HtmlOverlay() {
         {/* PAGE 2: THE PITCH (Empty space) */}
         <div className="w-screen h-[300vh] pointer-events-none" />
 
-        {/* PAGE 3: THE TRAINING GROUND / SKILLS */}
+        {/* PAGE 3: THE TRAINING GROUND / SKILLS Thoroughly Populated Bento */}
         <div className="w-screen h-screen flex items-center justify-center px-8">
           <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
             
@@ -99,46 +100,50 @@ export default function HtmlOverlay() {
               <p className="text-[#10b981] uppercase tracking-widest mt-2 font-semibold">Technical Arsenal & Architecture</p>
             </div>
             
-            {/* Bento Box 1: Languages */}
+            {/* Bento Box 1: Languages Thorough */}
             <div className="bg-[#0a0a0a]/80 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:border-[#3b82f6]/40 transition-all duration-500 flex flex-col group">
               <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-[#3b82f6] group-hover:animate-ping"></div>
                 Languages
               </h3>
-              <div className="grid grid-cols-1 gap-3 mt-auto">
+              <div className="grid grid-cols-2 gap-3 mt-auto">
                 <SkillBadge Icon={SiCplusplus} name="C++" desc="Memory & Systems" colorClass="group-hover:text-[#00599C]" />
-                <SkillBadge Icon={SiPython} name="Python" desc="ML & Data Logic" colorClass="group-hover:text-[#3776AB]" />
-                <SkillBadge Icon={SiJavascript} name="JavaScript" desc="DOM & Frontend" colorClass="group-hover:text-[#F7DF1E]" />
+                <SkillBadge Icon={SiPython} name="Python" desc="ML & Logic" colorClass="group-hover:text-[#3776AB]" />
+                <SkillBadge Icon={SiJavascript} name="JavaScript" desc="ES6+ & Frontend" colorClass="group-hover:text-[#F7DF1E]" />
+                <SkillBadge Icon={SiHtml5} name="HTML5 & CSS3" desc="Semantic Structure" colorClass="group-hover:text-[#E34F26]" />
               </div>
             </div>
             
-            {/* Bento Box 2: Backend & Databases */}
+            {/* Bento Box 2: Backend & DBs Thorough */}
             <div className="bg-[#0a0a0a]/80 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:border-[#8b5cf6]/40 transition-all duration-500 flex flex-col group">
               <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-[#8b5cf6] group-hover:animate-ping"></div>
                 Backend & DBs
               </h3>
-              <div className="grid grid-cols-1 gap-3 mt-auto">
+              <div className="grid grid-cols-2 gap-3 mt-auto">
                 <SkillBadge Icon={SiNodedotjs} name="Node.js" desc="Runtime Env" colorClass="group-hover:text-[#339933]" />
-                <SkillBadge Icon={SiExpress} name="Express" desc="RESTful APIs" colorClass="group-hover:text-white" />
+                <SkillBadge Icon={SiExpress} name="Express.js" desc="RESTful APIs" colorClass="group-hover:text-white" />
+                <SkillBadge Icon={FaNetworkWired} name="REST APIs" desc="Architecture" colorClass="group-hover:text-[#F29111]" />
                 <SkillBadge Icon={SiPostgresql} name="PostgreSQL" desc="Relational Data" colorClass="group-hover:text-[#4169E1]" />
+                <SkillBadge Icon={FaDatabase} name="SQL" desc="Query Logic" colorClass="group-hover:text-[#F29111]" />
               </div>
             </div>
 
-            {/* Bento Box 3: Core & Tools */}
+            {/* Bento Box 3: Core Concepts & Tools Thorough */}
             <div className="bg-[#0a0a0a]/80 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:border-[#f59e0b]/40 transition-all duration-500 flex flex-col group">
               <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-[#f59e0b] group-hover:animate-ping"></div>
                 Core & Tools
               </h3>
-              <div className="grid grid-cols-1 gap-3 mt-auto">
-                <SkillBadge Icon={FaNetworkWired} name="DSA" desc="Optimization" colorClass="group-hover:text-[#10b981]" />
-                <SkillBadge Icon={FaCode} name="OOP" desc="Architecture" colorClass="group-hover:text-[#10b981]" />
+              <div className="grid grid-cols-2 gap-3 mt-auto">
+                <SkillBadge Icon={SiDatabricks} name="DSA" desc="Algorithms & Performance" colorClass="group-hover:text-[#10b981]" />
+                <SkillBadge Icon={FaCode} name="OOP" desc="Software Design" colorClass="group-hover:text-[#10b981]" />
                 <SkillBadge Icon={FaGitAlt} name="Git / GitHub" desc="Version Control" colorClass="group-hover:text-[#F05032]" />
+                <SkillBadge Icon={SiEjs} name="EJS" desc="Dynamic Templating" colorClass="group-hover:text-[#10b981]" />
               </div>
             </div>
 
-            {/* --- NEW: THE ACTIVE TERMINAL (Col-span-3) --- */}
+            {/* --- THE ACTIVE TERMINAL (Stays the same, anchors the section) --- */}
             <div className="md:col-span-3 bg-black/60 backdrop-blur-xl border border-white/10 p-6 rounded-2xl flex items-center gap-6 font-mono text-sm group hover:border-[#10b981]/50 transition-colors">
               <div className="hidden md:flex flex-col gap-1 px-4 border-r border-white/10 text-gray-600">
                 <span>01</span><span>02</span><span>03</span>
@@ -156,10 +161,8 @@ export default function HtmlOverlay() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
-
         {/* PAGE 4: THE MANAGER'S DESK / CONTACT */}
         <div className="w-screen h-screen flex flex-col items-center justify-center px-8 pb-20 relative">
           

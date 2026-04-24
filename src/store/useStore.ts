@@ -9,6 +9,8 @@ export type NodeData = {
   description: string;
   techStack: string[];
   link?: string;
+  githubLink?: string;  // NEW
+  liveLink?: string;    // NEW
 };
 
 interface AppState {
@@ -17,7 +19,6 @@ interface AppState {
   currentRoute: 'HOME' | 'PROJECTS' | 'SKILLS' | 'CONTACT';
   setCurrentRoute: (route: 'HOME' | 'PROJECTS' | 'SKILLS' | 'CONTACT') => void;
   
-  // NEW: Store the function that smoothly scrolls the 3D canvas
   scrollToSection: ((offset: number) => void) | null;
   setScrollToSection: (fn: (offset: number) => void) => void;
 }
@@ -28,7 +29,6 @@ export const useStore = create<AppState>((set) => ({
   currentRoute: 'HOME',
   setCurrentRoute: (route) => set({ currentRoute: route }),
   
-  // NEW: State for scrolling
   scrollToSection: null,
   setScrollToSection: (fn) => set({ scrollToSection: fn }),
 }));

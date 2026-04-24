@@ -1,74 +1,64 @@
-import { useRef, useState } from 'react';
-import * as THREE from 'three';
+import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Float, useScroll } from '@react-three/drei';
-import { useStore, type NodeData } from '../../store/useStore';
+import { Float, Html, useScroll } from '@react-three/drei';
+import * as THREE from 'three';
+import { type NodeData } from '../../store/useStore';
 
 export default function SkillNode({ data }: { data: NodeData }) {
-  const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
-  const setActiveNode = useStore((state) => state.setActiveNode);
+  const cardRef = useRef<HTMLDivElement>(null);
   const scroll = useScroll();
 
-  const glowColor = new THREE.Color(data.color).multiplyScalar(hovered ? 3 : 1.5);
-
   useFrame(() => {
-    if (!groupRef.current) return;
+    if (!cardRef.current) return;
     
-    // 1. The Clustering Physics
-    const offset = scroll.offset; // Get scroll percentage
-    const isProjectSection = offset > 0.15 && offset < 0.6;
+    // Track where the ball is on the pitch (Z: 20 down to Z: -60)
+    const ballProgress = Math.min(Math.max((scroll.offset - 0.1) / 0.6, 0), 1);
+    const ballZ = THREE.MathUtils.lerp(20, -60, ballProgress);
 
-    // Define the base (wide) position
-    const [baseX, baseZ] = data.position;
-    
-    // Define the clustered (tight) position (pulling everything closer to center x:0, z:-25)
-    const clusterX = baseX * 0.3; 
-    const clusterZ = -25 + (baseZ + 25) * 0.4; 
+    // Reveal the card when the ball is 10 units away or has passed it
+    const isRevealed = ballZ <= data.position[2] + 10;
 
-    // Determine target position based on scroll
-    const targetX = isProjectSection ? clusterX : baseX;
-    const targetZ = isProjectSection ? clusterZ : baseZ;
-
-    // Smoothly Lerp (glide) the pins to their target positions
-    groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.05);
-    groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, targetZ, 0.05);
-
-    // 2. Hover Scale
-    const targetScale = hovered ? 1.3 : 1;
-    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+    // Bulletproof direct DOM manipulation (Zero React lag)
+    if (isRevealed) {
+      cardRef.current.style.opacity = '1';
+      cardRef.current.style.transform = 'translateY(0) scale(1)';
+      cardRef.current.style.pointerEvents = 'auto';
+    } else {
+      cardRef.current.style.opacity = '0';
+      cardRef.current.style.transform = 'translateY(20px) scale(0.8)';
+      cardRef.current.style.pointerEvents = 'none';
+    }
   });
 
   return (
-    // Float makes the entire pin bob up and down gracefully
-    <Float speed={2} rotationIntensity={0} floatIntensity={0.5} floatingRange={[-0.1, 0.1]}>
-      <group
-        ref={groupRef}
-        position={data.position} // Start at base position
-        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-        onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto'; }}
-        onClick={(e) => { e.stopPropagation(); setActiveNode(data); }}
-      >
-        
-        {/* THE TACTICAL PIN GEOMETRY */}
-        {/* 1. The Player Head (Sphere) */}
-        <mesh position={[0, 1.8, 0]}>
-          <sphereGeometry args={[0.5, 32, 32]} />
-          <meshBasicMaterial color={glowColor} />
-        </mesh>
-
-        {/* 2. The Player Body/Base (Cone) */}
-        <mesh position={[0, 0.8, 0]}>
-          <coneGeometry args={[0.6, 1.6, 8]} />
-          <meshBasicMaterial color={glowColor} wireframe={data.type === 'skill'} opacity={0.8} transparent />
-        </mesh>
-        
-        {/* 3. The Ground Shadow/Ring */}
-        <mesh position={[0, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[0.7, 0.9, 16]} />
-          <meshBasicMaterial color={glowColor} transparent opacity={0.5} />
-        </mesh>
-
+    <Float speed={2} rotationIntensity={0} floatIntensity={0.5} floatingRange={[-0.2, 0.2]}>
+      {/* Positioned exactly where your SquadData dictates */}
+      <group position={data.position}>
+        <Html center zIndexRange={[50, 0]}>
+          <div 
+            ref={cardRef}
+            className="w-56 md:w-64 bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-[0_0_30px_rgba(0,0,0,0.8)] transition-all duration-500 ease-out"
+            style={{ opacity: 0, transform: 'translateY(20px) scale(0.8)', pointerEvents: 'none' }}
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: data.color, boxShadow: `0 0 10px ${data.color}` }} />
+              <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+                {data.type === 'project' ? 'Project' : 'Skill'}
+              </span>
+            </div>
+            
+            <h3 className="text-lg font-bold text-white mb-2 leading-tight">{data.title}</h3>
+            <p className="text-xs text-gray-400 leading-relaxed mb-4">{data.description}</p>
+            
+            <div className="flex flex-wrap gap-1">
+              {data.techStack?.map(tech => (
+                <span key={tech} className="px-2 py-1 text-[9px] font-bold uppercase bg-white/5 border border-white/10 rounded text-white/70">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Html>
       </group>
     </Float>
   );
